@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link'
 import { Container } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -8,15 +9,13 @@ function NavBar() {
     <Container>
       <Nav variant="tabs" defaultActiveKey="/home">
         <Nav.Item>
-          <Nav.Link href="/home">Active</Nav.Link>
+          <Link href="/" className='nav-link'> Home</Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="link-1">Option 2</Nav.Link>
+           <Link href="/facebook" className='nav-link'>Facebook</Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="disabled" disabled>
-            Disabled
-          </Nav.Link>
+            <Link href="/youtube" className='nav-link'>Youtube</Link>
         </Nav.Item>
       <NavDropdown title="Dropdown" id="nav-dropdown">
           <NavDropdown.Item eventKey="4.1">Action</NavDropdown.Item>
