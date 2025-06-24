@@ -7,6 +7,7 @@ import quy from '@/styles/quy.module.css';
 import { Container } from 'react-bootstrap';
 import { useEffect } from 'react';
 import useSWR from 'swr';
+import TableComponent from '@/components/table/table';
 
 export default function Home() {
 
@@ -20,8 +21,12 @@ export default function Home() {
       revalidateOnReconnect: false,
     });
 
-  console.log('data', data);
-
+  if (!data) {
+    return (
+      <>
+        Loading ...
+      </>)
+  }
   return (
     <>
       <Container>
@@ -36,6 +41,9 @@ export default function Home() {
             <Link href="/tiktok">Tiktok</Link>
           </li>
         </ul>
+        <div>
+          <TableComponent blogs={data} />
+        </div>
       </Container>
     </>
   )

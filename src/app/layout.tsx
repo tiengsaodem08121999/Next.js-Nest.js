@@ -1,8 +1,6 @@
 import { Inter } from 'next/font/google';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from '@/components/nav/nav';
-import TableComponent from '@/components/table/table';
-import Container from 'react-bootstrap/Container';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,9 +21,6 @@ export default function RootLayout({
           <NavBar/>
         </div>
           {children}
-        <div>
-          <TableComponent/>        
-        </div>
         <div style={{ background:'#ddd', textAlign: 'center', padding: '20px', marginTop: '20px' }}>
            Next.JS v13 Basic
         </div>
