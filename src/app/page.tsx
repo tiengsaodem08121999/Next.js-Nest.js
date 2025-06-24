@@ -37,7 +37,7 @@ export default function Home() {
         </ul>
         <div>
           {data &&(
-            <TableComponent blogs={data} />
+            <TableComponent blogs={data?.sort((a:any , b: any) => b.id - a.id )} />
           )}
         </div>
       </Container>
