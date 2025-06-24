@@ -1,7 +1,8 @@
 'use client'
-import { Container } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import { Button } from 'react-bootstrap';
+import CreateModal from '../modal/create';
+import { useState } from 'react';
 
 interface IProps {
   blogs: []
@@ -9,8 +10,15 @@ interface IProps {
 
 function TableComponent(props: IProps) {
   const { blogs } = props;
+  const [showModal, setShowModal] = useState(false);
   return (
-    <Container>
+    <>
+      <div className='mb-3' style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <h3>
+          Table Blogs
+        </h3>
+        <Button variant='secondary' onClick={() => setShowModal(true)} >Add New</Button>
+      </div>
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
@@ -23,7 +31,7 @@ function TableComponent(props: IProps) {
         <tbody>
           {blogs.map(blog => {
             return (
-              <tr key= {blog.id}>
+              <tr key={blog.id}>
                 <td>{blog.id}</td>
                 <td>{blog.title}</td>
                 <td>{blog.author}</td>
@@ -35,10 +43,12 @@ function TableComponent(props: IProps) {
               </tr>
             )
           })}
-
         </tbody>
       </Table>
-    </Container>
+      <CreateModal
+        showModal={showModal}
+        setShowModal={setShowModal}></CreateModal>
+    </>
   );
 }
 

@@ -21,12 +21,6 @@ export default function Home() {
       revalidateOnReconnect: false,
     });
 
-  if (!data) {
-    return (
-      <>
-        Loading ...
-      </>)
-  }
   return (
     <>
       <Container>
@@ -42,7 +36,9 @@ export default function Home() {
           </li>
         </ul>
         <div>
-          <TableComponent blogs={data} />
+          {data &&(
+            <TableComponent blogs={data} />
+          )}
         </div>
       </Container>
     </>
