@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import { toast } from 'react-toastify';
 
 interface IProps {
     showModal: boolean;
@@ -17,10 +18,42 @@ function CreateModal(props: IProps) {
     const [content, setContent] = useState('');
 
     const handleCreateBlogs = () => {
-        console.log(title, author, content);
-
-        ClearData();
-        setShowModal(false);
+        console.log('check', title, author, content);
+        if (!title || !author || !content) {
+            toast.error('Please fill in all fields!');
+            return;
+        }
+        // Call API to create blog
+        fetch('http://localhost:8000/blogs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                title: title,
+                content: content,
+                author: author,
+            }), 
+        })
+        .then(response => {
+            if (!response.ok){ 
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Success:', data);
+            toast.success('Create blog successfully!');
+            ClearData();
+            setShowModal(false);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            ClearData();
+            setShowModal(false);
+            toast.error('Create blog failed!');
+        });
     }
 
     const ClearData = () => {

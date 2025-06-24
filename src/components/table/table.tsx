@@ -4,21 +4,27 @@ import { Button } from 'react-bootstrap';
 import CreateModal from '../modal/create';
 import { useState } from 'react';
 
+interface Blog {
+  id: number;
+  title: string;
+  author: string;
+}
+
 interface IProps {
-  blogs: []
+  blogs: Blog[];
 }
 
 function TableComponent(props: IProps) {
   const { blogs } = props;
   const [showModal, setShowModal] = useState(false);
+  
   return (
     <>
       <div className='mb-3' style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h3>
-          Table Blogs
-        </h3>
-        <Button variant='secondary' onClick={() => setShowModal(true)} >Add New</Button>
+        <h3>Table Blogs</h3>
+        <Button variant='secondary' onClick={() => setShowModal(true)}>Add New</Button>
       </div>
+
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
@@ -29,25 +35,25 @@ function TableComponent(props: IProps) {
           </tr>
         </thead>
         <tbody>
-          {blogs.map(blog => {
-            return (
-              <tr key={blog.id}>
-                <td>{blog.id}</td>
-                <td>{blog.title}</td>
-                <td>{blog.author}</td>
-                <td>
-                  <Button>View</Button>
-                  <Button variant='warning' className='mx-3'>Edit</Button>
-                  <Button variant='danger'>Delete</Button>
-                </td>
-              </tr>
-            )
-          })}
+          {blogs.map(blog => (
+            <tr key={blog.id}>
+              <td>{blog.id}</td>
+              <td>{blog.title}</td>
+              <td>{blog.author}</td>
+              <td>
+                <Button>View</Button>
+                <Button variant='warning' className='mx-3'>Edit</Button>
+                <Button variant='danger'>Delete</Button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
+
       <CreateModal
         showModal={showModal}
-        setShowModal={setShowModal}></CreateModal>
+        setShowModal={setShowModal}
+      />
     </>
   );
 }
