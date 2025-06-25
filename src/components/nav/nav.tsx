@@ -12,10 +12,7 @@ function NavBar() {
           <Link href="/" className='nav-link'> Home</Link>
         </Nav.Item>
         <Nav.Item>
-           <Link href="/facebook" className='nav-link'>Facebook</Link>
-        </Nav.Item>
-        <Nav.Item>
-            <Link href="/youtube" className='nav-link'>Youtube</Link>
+           <Link href="/blogs" className='nav-link'>Blogs</Link>
         </Nav.Item>
       <NavDropdown title="Dropdown" id="nav-dropdown">
           <NavDropdown.Item eventKey="4.1">Action</NavDropdown.Item>

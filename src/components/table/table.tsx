@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import CreateModal from '../modal/create';
 import { useState } from 'react';
 import UpdateModal from '../modal/update';
+import Link from 'next/link';
 
 interface Blog {
   id: number;
@@ -19,14 +20,14 @@ interface IProps {
 function TableComponent(props: IProps) {
   const { blogs } = props;
   const [showModal, setShowModal] = useState(false);
-  const [showModalUpdate, setShowModalUpdate ] = useState(false);
-  const [blog, setBlog] = useState<Blog| null>(null);
+  const [showModalUpdate, setShowModalUpdate] = useState(false);
+  const [blog, setBlog] = useState<Blog | null>(null);
 
   const handleShowUpdateBlog = (blog: Blog) => {
-      setBlog(blog);
-      setShowModalUpdate(true);
-  } 
-  
+    setBlog(blog);
+    setShowModalUpdate(true);
+  }
+
   return (
     <>
       <div className='mb-3' style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -50,7 +51,7 @@ function TableComponent(props: IProps) {
               <td>{item.title}</td>
               <td>{item.author}</td>
               <td>
-                <Button>View</Button>
+                <Link className='btn btn-primary' href={`/blogs/${item.id}`}>View</Link>
                 <Button variant='warning' onClick={() => handleShowUpdateBlog(item)} className='mx-3'>Edit</Button>
                 <Button variant='danger'>Delete</Button>
               </td>
@@ -64,10 +65,10 @@ function TableComponent(props: IProps) {
         setShowModal={setShowModal}
       />
       <UpdateModal
-        showModalUpdate= {showModalUpdate}
-        setShowModalUpdate = {setShowModalUpdate}
-        blog = {blog}
-        setBlog= {setBlog}
+        showModalUpdate={showModalUpdate}
+        setShowModalUpdate={setShowModalUpdate}
+        blog={blog}
+        setBlog={setBlog}
       />
     </>
   );
