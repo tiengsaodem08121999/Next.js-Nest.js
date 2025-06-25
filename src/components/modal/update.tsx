@@ -1,90 +1,90 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { toast } from 'react-toastify';
 import { mutate } from 'swr';
 
-interface IProps {
-    showModal: boolean;
-    setShowModal: (value: boolean) => void;
+interface Blog {
+    id: number;
+    title: string;
+    author: string;
+    content: string;
 }
 
-function CreateModal(props: IProps) {
-    const { showModal, setShowModal } = props;
+interface IProps {
+    showModalUpdate: boolean;
+    setShowModalUpdate: (value: boolean) => void;
+    blog: Blog | null;
+    setBlog: React.Dispatch<React.SetStateAction<Blog | null>>;
+}
+
+function UpdateModal(props: IProps) {
+    const { blog, setBlog, showModalUpdate, setShowModalUpdate } = props;
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [content, setContent] = useState('');
+    const [id, setId] = useState<number>(0);
 
-    const handleCreateBlogs = () => {
-        console.log('check', title, author, content);
-        if (!title || !author || !content) {
+    useEffect(() => {
+        if (blog) {
+            setId(blog.id);
+            setTitle(blog.title);
+            setAuthor(blog.author);
+            setContent(blog.content);
+        }
+    }, [blog]);
+
+    const handleUpdateBlogs = () => {
+        if(!title || !author || !content) {
             toast.error('Please fill in all fields!');
             return;
         }
-        // Call API to create blog
-        fetch('http://localhost:8000/blogs', {
-            method: 'POST',
-            headers: {
+
+        fetch(`http://localhost:8000/blogs/${id}`, {
+            method: 'PUT',
+             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
-            body: JSON.stringify({
+              body: JSON.stringify({
                 title: title,
                 content: content,
                 author: author,
             }), 
-        })
-        .then(response => {
-            if (!response.ok){ 
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Success:', data);
-            toast.success('Create blog successfully!');
-            ClearData();
-            setShowModal(false);
-            mutate('http://localhost:8000/blogs');
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            ClearData();
-            setShowModal(false);
-            toast.error('Create blog failed!');
-        });
-    }
-
-    const ClearData = () => {
-        setTitle('');
-        setAuthor('');
-        setContent('');
+        }).then(res=> res.json())
+            .then(res => {
+                if(res) {
+                    toast.info('Update Blog Sucsseed');
+                    setShowModalUpdate(false);
+                    mutate('http://localhost:8000/blogs');
+                }
+            });
     }
 
     return (
         <>
             <Modal
-                show={showModal}
-                onHide={() => setShowModal(false)}
+                show={showModalUpdate}
+                onHide={() => setShowModalUpdate(false)}
                 backdrop="static"
                 keyboard={false}
                 size='lg'
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Create Modal</Modal.Title>
+                    <Modal.Title>Update Modal</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label>Title</Form.Label>
-                            <Form.Control type="text" value={title} onChange={(event) => setTitle(event.target.value)}/>
+                            <Form.Control type="text" value={title} onChange={(event) => setTitle(event.target.value)} />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label>Author</Form.Label>
-                            <Form.Control type="text" value={author} onChange={(event) => setAuthor(event.target.value)}/>
+                            <Form.Control type="text" value={author} onChange={(event) => setAuthor(event.target.value)} />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                             <Form.Label>Content</Form.Label>
@@ -93,14 +93,14 @@ function CreateModal(props: IProps) {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                    <Button variant="secondary" onClick={() => setShowModalUpdate(false)}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => handleCreateBlogs()}>Save</Button>
+                    <Button variant="primary" onClick={() => handleUpdateBlogs()}>Save</Button>
                 </Modal.Footer>
             </Modal>
         </>
     );
 }
 
-export default CreateModal;
+export default UpdateModal;
